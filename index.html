@@ -42,6 +42,7 @@
                 <option value="2">2º Ano</option>
                 <option value="3">3º Ano</option>
             </select>
+
             <label for="turma">Turma:</label>
 
             <select id="turma">
@@ -52,6 +53,14 @@
                 <option value="D">D</option>
                 <option value="E">E</option>
             </select>
+
+            <label for="equipamento">Número do equipamento:</label>
+
+            <input
+                type="number"
+                id="equipamento"
+                placeholder="Digite o número do equipamento"
+            >
 
             <p>
                 Horário atual:
@@ -64,7 +73,12 @@
 
     </main>
 
+
     <script>
+
+        // ==========================
+        // HORÁRIO
+        // ==========================
 
         function atualizarHorario() {
 
@@ -84,21 +98,86 @@
 
         atualizarHorario();
 
-        const turma = document.getElementById("turma").value;
 
-        function registrar() {
+        // ==========================
+        // REGISTRO
+        // ==========================
+
+        async function registrar() {
 
             const email = document.getElementById("email").value;
             const serie = document.getElementById("serie").value;
+            const turma = document.getElementById("turma").value;
+            const equipamento = document.getElementById("equipamento").value;
+            const horario = document.getElementById("horario").textContent;
 
-           if (email === "" || serie === "" || turma === "") {
-            alert("Preencha o e-mail, selecione sua série e sua turma.");
-            return;
+
+            // CONSOLE PARA TESTAR OS DADOS
+
+            console.log("========== REGISTRO ==========");
+            console.log("E-mail:", email);
+            console.log("Série:", serie);
+            console.log("Turma:", turma);
+            console.log("Equipamento:", equipamento);
+            console.log("Horário:", horario);
+            console.log("==============================");
+
+
+            // VERIFICAÇÃO DOS CAMPOS
+
+            if (
+                email === "" ||
+                serie === "" ||
+                turma === "" ||
+                equipamento === ""
+            ) {
+
+                alert("Preencha todos os campos antes de registrar.");
+
+                return;
             }
 
-            alert("Registro realizado com sucesso!");
 
-            window.location.href = "https://www.google.com";
+            // ENVIA OS DADOS PARA O PYTHON
+
+            const resposta = await fetch("/registrar", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    email: email,
+                    serie: serie,
+                    turma: turma,
+                    equipamento: equipamento,
+                    horario: horario
+
+                })
+
+            });
+
+
+            const resultado = await resposta.json();
+
+
+            console.log("Resposta do servidor:", resultado);
+
+
+            if (resultado.sucesso) {
+
+                alert("Registro realizado com sucesso!");
+
+                window.location.href = "https://www.google.com";
+
+            } else {
+
+                alert("Erro ao realizar o registro.");
+
+            }
 
         }
 
@@ -107,4 +186,3 @@
 </body>
 
 </html>
-
