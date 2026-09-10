@@ -83,17 +83,16 @@
 
         atualizarHorario();
 
+        const turma = document.getElementById("turma").value;
 
         function registrar() {
 
             const email = document.getElementById("email").value;
             const serie = document.getElementById("serie").value;
 
-            if (email === "" || serie === "") {
-
-                alert("Preencha o e-mail e selecione sua série.");
-
-                return;
+           if (email === "" || serie === "" || turma === "") {
+            alert("Preencha o e-mail, selecione sua série e sua turma.");
+            return;
             }
 
             alert("Registro realizado com sucesso!");
@@ -107,4 +106,4 @@
 </body>
 
 </html>
-```
+
