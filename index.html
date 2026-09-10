@@ -1,0 +1,102 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registro - Colégio Alfredo Chaves</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Colégio Cívico Militar Alfredo Chaves</h1>
+    </header>
+
+    <main>
+
+        <div class="caixa">
+
+            <h2>Registro de Acesso</h2>
+
+            <label for="email">E-mail:</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Digite seu e-mail"
+            >
+
+            <label for="serie">Série/Ano:</label>
+
+            <select id="serie">
+                <option value="">Selecione sua série</option>
+                <option value="6">6º Ano</option>
+                <option value="7">7º Ano</option>
+                <option value="8">8º Ano</option>
+                <option value="9">9º Ano</option>
+                <option value="1">1º Ano</option>
+                <option value="2">2º Ano</option>
+                <option value="3">3º Ano</option>
+            </select>
+
+            <p>
+                Horário atual:
+                <span id="horario">00:00</span>
+            </p>
+
+            <button onclick="registrar()">REGISTRAR</button>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        function atualizarHorario() {
+
+            const agora = new Date();
+
+            let horas = agora.getHours();
+            let minutos = agora.getMinutes();
+
+            horas = horas.toString().padStart(2, "0");
+            minutos = minutos.toString().padStart(2, "0");
+
+            document.getElementById("horario").textContent =
+                horas + ":" + minutos;
+        }
+
+        setInterval(atualizarHorario, 1000);
+
+        atualizarHorario();
+
+
+        function registrar() {
+
+            const email = document.getElementById("email").value;
+            const serie = document.getElementById("serie").value;
+
+            if (email === "" || serie === "") {
+
+                alert("Preencha o e-mail e selecione sua série.");
+
+                return;
+            }
+
+            alert("Registro realizado com sucesso!");
+
+            window.location.href = "https://www.google.com";
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+```
