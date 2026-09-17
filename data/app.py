@@ -16,13 +16,33 @@ def inicio():
 
 
 # ==========================================
-# CSS
+# CSS DA PÁGINA PRINCIPAL
 # ==========================================
 
 @app.route("/style.css")
 def css():
 
     return send_from_directory("..", "style.css")
+
+
+# ==========================================
+# PAINEL ADMINISTRATIVO
+# ==========================================
+
+@app.route("/admin")
+def admin():
+
+    return send_from_directory("..", "admin.html")
+
+
+# ==========================================
+# CSS DO PAINEL
+# ==========================================
+
+@app.route("/admin.css")
+def admin_css():
+
+    return send_from_directory("..", "admin.css")
 
 
 # ==========================================
@@ -81,18 +101,21 @@ def registrar():
 
 
     print("========== NOVO REGISTRO ==========")
+
     print("E-mail:", email)
     print("Série:", serie)
     print("Turma:", turma)
     print("Equipamento:", equipamento)
     print("Data:", data)
     print("Horário:", horario)
+
     print("===================================")
 
 
     conexao = sqlite3.connect("banco.db")
 
     cursor = conexao.cursor()
+
 
     cursor.execute("""
         INSERT INTO registros
@@ -108,14 +131,82 @@ def registrar():
         horario
     ))
 
+
     conexao.commit()
 
     conexao.close()
 
 
     return jsonify({
+
         "sucesso": True,
+
         "mensagem": "Registro realizado com sucesso!"
+
+    })
+
+
+# ==========================================
+# BUSCAR REGISTROS
+# ==========================================
+
+@app.route("/registros")
+def registros():
+
+    conexao = sqlite3.connect("banco.db")
+
+    cursor = conexao.cursor()
+
+
+    cursor.execute("""
+        SELECT
+            id,
+            email,
+            serie,
+            turma,
+            equipamento,
+            data,
+            horario
+
+        FROM registros
+
+        ORDER BY id DESC
+    """)
+
+
+    registros_banco = cursor.fetchall()
+
+    conexao.close()
+
+
+    lista = []
+
+
+    for registro in registros_banco:
+
+        lista.append({
+
+            "id": registro[0],
+
+            "email": registro[1],
+
+            "serie": registro[2],
+
+            "turma": registro[3],
+
+            "equipamento": registro[4],
+
+            "data": registro[5],
+
+            "horario": registro[6]
+
+        })
+
+
+    return jsonify({
+
+        "registros": lista
+
     })
 
 

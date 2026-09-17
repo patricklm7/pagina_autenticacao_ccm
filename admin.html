@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Painel de Registros - Alfredo Chaves</title>
+
+    <link rel="stylesheet" href="/admin.css">
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>Colégio Cívico Militar Alfredo Chaves</h1>
+
+        <h2>Painel de Registros</h2>
+
+    </header>
+
+
+    <main>
+
+        <div class="painel">
+
+            <div class="topo">
+
+                <h2>Registros de Acesso</h2>
+
+                <button onclick="carregarRegistros()">
+                    ATUALIZAR
+                </button>
+
+            </div>
+
+
+            <p id="quantidade">
+                Registros encontrados: 0
+            </p>
+
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>E-mail</th>
+                            <th>Série</th>
+                            <th>Turma</th>
+                            <th>Equipamento</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tabela-registros">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        async function carregarRegistros() {
+
+            try {
+
+                const resposta = await fetch("/registros");
+
+                const dados = await resposta.json();
+
+                console.log("Registros recebidos:", dados);
+
+
+                const tabela =
+                    document.getElementById("tabela-registros");
+
+
+                tabela.innerHTML = "";
+
+
+                dados.registros.forEach(registro => {
+
+                    const linha = document.createElement("tr");
+
+
+                    linha.innerHTML = `
+
+                        <td>${registro.id}</td>
+
+                        <td>${registro.data}</td>
+
+                        <td>${registro.horario}</td>
+
+                        <td>${registro.email}</td>
+
+                        <td>${registro.serie}º Ano</td>
+
+                        <td>${registro.turma}</td>
+
+                        <td>${registro.equipamento}</td>
+
+                    `;
+
+
+                    tabela.appendChild(linha);
+
+                });
+
+
+                document.getElementById("quantidade").textContent =
+                    "Registros encontrados: " + dados.registros.length;
+
+
+            } catch (erro) {
+
+                console.error("Erro:", erro);
+
+            }
+
+        }
+
+
+        // Carrega os registros automaticamente
+        carregarRegistros();
+
+    </script>
+
+</body>
+
+</html>
